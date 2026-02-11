@@ -9,79 +9,58 @@ interface Product {
   year: string;
 }
 
-const Gallery: React.FC = () => {
-  // Podatki so ročno zapisani tukaj. Brez fetch(), brez products.json.
-  const products: Product[] = [
-    { 
-      id: 1, 
-      category: 'Urban & Street', 
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Urbana Vizija', 
-      year: '2024' 
-    },
-    { 
-      id: 2, 
-      category: 'Lifestyle & Details', 
-      image: 'https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Zimski Detajl I', 
-      year: '2024' 
-    },
-    { 
-      id: 3, 
-      category: 'Urban & Street', 
-      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Mestna Arhitektura', 
-      year: '2023' 
-    },
-    { 
-      id: 4, 
-      category: 'Lifestyle & Details', 
-      image: 'https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Zimski Detajl II', 
-      year: '2024' 
-    },
-    { 
-      id: 5, 
-      category: 'Urban & Street', 
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Geometrija mesta', 
-      year: '2024' 
-    },
-    { 
-      id: 6, 
-      category: 'Urban & Street', 
-      image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1000', 
-      title: 'Odmev ulice', 
-      year: '2023' 
-    }
-  ];
+// Podatki so definirani neposredno v kodi za maksimalno zanesljivost
+const products: Product[] = [
+  { 
+    id: 1, 
+    category: 'Urban & Street', 
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Urbana Vizija', 
+    year: '2024' 
+  },
+  { 
+    id: 2, 
+    category: 'Lifestyle & Details', 
+    image: 'https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Zimski Detajl I', 
+    year: '2024' 
+  },
+  { 
+    id: 3, 
+    category: 'Urban & Street', 
+    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Mestna Arhitektura', 
+    year: '2023' 
+  },
+  { 
+    id: 4, 
+    category: 'Lifestyle & Details', 
+    image: 'https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Zimski Detajl II', 
+    year: '2024' 
+  },
+  { 
+    id: 5, 
+    category: 'Urban & Street', 
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Geometrija mesta', 
+    year: '2024' 
+  },
+  { 
+    id: 6, 
+    category: 'Urban & Street', 
+    image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1000', 
+    title: 'Odmev ulice', 
+    year: '2023' 
+  }
+];
 
+const Gallery: React.FC = () => {
   const [filter, setFilter] = useState('Vse');
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const itemsPerPage = 6;
 
   const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
-
   const filteredProducts = filter === 'Vse' ? products : products.filter(p => p.category === filter);
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    const section = document.getElementById('gallery');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleFilterChange = (cat: string) => {
-    setFilter(cat);
-    setCurrentPage(1);
-  };
 
   const openLightbox = (product: Product) => {
     setSelectedProduct(product);
@@ -101,12 +80,12 @@ const Gallery: React.FC = () => {
             <span className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] mb-4 block">Portfelj</span>
             <h2 className="text-4xl font-bold tracking-tight uppercase">IZBRANA <span className="font-serif italic font-normal text-zinc-400">DELA.</span></h2>
           </div>
-          <div className="flex flex-wrap gap-6 md:gap-12 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex flex-wrap gap-6 md:gap-12">
             {categories.map((cat) => (
               <button 
                 key={cat}
-                onClick={() => handleFilterChange(cat)}
-                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 whitespace-nowrap ${
+                onClick={() => setFilter(cat)}
+                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 ${
                   filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-white'
                 }`}
               >
@@ -116,8 +95,8 @@ const Gallery: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-          {currentProducts.map((product) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product) => (
             <div 
               key={product.id} 
               onClick={() => openLightbox(product)}
@@ -142,36 +121,14 @@ const Gallery: React.FC = () => {
             </div>
           ))}
         </div>
-
-        {totalPages > 1 && (
-          <div className="mt-20 flex justify-center items-center gap-4">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-              <button
-                key={number}
-                onClick={() => handlePageChange(number)}
-                className={`w-12 h-12 flex items-center justify-center text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                  currentPage === number 
-                    ? 'bg-white text-black border-white' 
-                    : 'text-zinc-500 border-white/10 hover:border-white/40'
-                }`}
-              >
-                {String(number).padStart(2, '0')}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div className="mt-12 text-center text-zinc-600 text-[10px] uppercase tracking-[0.4em]">
-          Prikazano {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredProducts.length)} od {filteredProducts.length}
-        </div>
       </div>
 
       {selectedProduct && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500"
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12"
           onClick={closeLightbox}
         >
-          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]" onClick={closeLightbox}>
+          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
             <X size={32} />
           </button>
           <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
