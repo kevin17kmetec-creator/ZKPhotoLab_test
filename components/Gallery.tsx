@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import { X, Maximize2 } from 'lucide-react';
 
-interface Product {
-  id: number;
-  category: string;
-  image: string;
-  title: string;
-  year: string;
-}
-
-// Podatki so definirani neposredno v kodi za maksimalno zanesljivost
-const products: Product[] = [
+// Podatki so definirani neposredno v kodi za maksimalno hitrost in zanesljivost.
+// Uporabljamo Unsplash slike, ki odražajo "Urban & Lifestyle" estetiko ZK Photolab.
+const products = [
   { 
     id: 1, 
     category: 'Urban & Street', 
@@ -22,7 +15,7 @@ const products: Product[] = [
     id: 2, 
     category: 'Lifestyle & Details', 
     image: 'https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Zimski Detajl I', 
+    title: 'Zimski Detajl', 
     year: '2024' 
   },
   { 
@@ -36,33 +29,33 @@ const products: Product[] = [
     id: 4, 
     category: 'Lifestyle & Details', 
     image: 'https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Zimski Detajl II', 
+    title: 'Fokus na Trenutek', 
     year: '2024' 
   },
   { 
     id: 5, 
     category: 'Urban & Street', 
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Geometrija mesta', 
+    title: 'Geometrija Mesta', 
     year: '2024' 
   },
   { 
     id: 6, 
     category: 'Urban & Street', 
     image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Odmev ulice', 
+    title: 'Odmev Ulice', 
     year: '2023' 
   }
 ];
 
 const Gallery: React.FC = () => {
   const [filter, setFilter] = useState('Vse');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
   const filteredProducts = filter === 'Vse' ? products : products.filter(p => p.category === filter);
 
-  const openLightbox = (product: Product) => {
+  const openLightbox = (product: any) => {
     setSelectedProduct(product);
     document.body.style.overflow = 'hidden';
   };
@@ -78,14 +71,16 @@ const Gallery: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div>
             <span className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] mb-4 block">Portfelj</span>
-            <h2 className="text-4xl font-bold tracking-tight uppercase">IZBRANA <span className="font-serif italic font-normal text-zinc-400">DELA.</span></h2>
+            <h2 className="text-4xl font-bold tracking-tight uppercase">
+              IZBRANA <span className="font-serif italic font-normal text-zinc-400">DELA.</span>
+            </h2>
           </div>
           <div className="flex flex-wrap gap-6 md:gap-12">
             {categories.map((cat) => (
               <button 
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 ${
+                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 outline-none ${
                   filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-white'
                 }`}
               >
@@ -125,10 +120,10 @@ const Gallery: React.FC = () => {
 
       {selectedProduct && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12"
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
           onClick={closeLightbox}
         >
-          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
+          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
             <X size={32} />
           </button>
           <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
