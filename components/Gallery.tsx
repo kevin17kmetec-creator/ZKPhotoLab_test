@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Maximize2 } from 'lucide-react';
 
@@ -11,41 +10,59 @@ interface Product {
 }
 
 const Gallery: React.FC = () => {
+  // Podatki so vključeni neposredno v kodo. Nič se ne nalaga iz zunanjih JSON datotek.
+  // Uporabljamo placeholder slike z Unsplash za takojšen vizualni učinek.
+  const products: Product[] = [
+    { 
+      id: 1, 
+      category: 'Urban & Street', 
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Urbana Vizija', 
+      year: '2024' 
+    },
+    { 
+      id: 2, 
+      category: 'Lifestyle & Details', 
+      image: 'https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Zimski Detajl I', 
+      year: '2024' 
+    },
+    { 
+      id: 3, 
+      category: 'Urban & Street', 
+      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Mestna Arhitektura', 
+      year: '2023' 
+    },
+    { 
+      id: 4, 
+      category: 'Lifestyle & Details', 
+      image: 'https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Zimski Detajl II', 
+      year: '2024' 
+    },
+    { 
+      id: 5, 
+      category: 'Urban & Street', 
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Geometrija mesta', 
+      year: '2024' 
+    },
+    { 
+      id: 6, 
+      category: 'Urban & Street', 
+      image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1000', 
+      title: 'Odmev ulice', 
+      year: '2023' 
+    }
+  ];
+
   const [filter, setFilter] = useState('Vse');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const itemsPerPage = 10;
+  const itemsPerPage = 6;
 
   const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
-
-  // Podatki so ročno zapisani v kodo (hardcoded), da se izognemo 404 napakam
-  const products: Product[] = [
-    { id: 1, category: 'Urban & Street', image: './slika1.jpg', title: 'Urbana Vizija', year: '2024' },
-    { id: 2, category: 'Lifestyle & Details', image: './slika2.jpg', title: 'Zimski Detajl I', year: '2024' },
-    { id: 3, category: 'Urban & Street', image: './slika3.jpg', title: 'Mestna Arhitektura', year: '2023' },
-    { id: 4, category: 'Lifestyle & Details', image: './slika4.jpg', title: 'Zimski Detajl II', year: '2024' },
-    { id: 5, category: 'Urban & Street', image: './slika5.jpg', title: 'Geometrija mesta', year: '2024' },
-    { id: 6, category: 'Urban & Street', image: './slika6.jpg', title: 'Odmev ulice', year: '2023' },
-    { id: 7, category: 'Lifestyle & Details', image: './slika7.jpg', title: 'Tekstura vsakdana', year: '2024' },
-    { id: 8, category: 'Urban & Street', image: './slika8.jpg', title: 'Mestni okvir', year: '2023' },
-    { id: 9, category: 'Lifestyle & Details', image: './slika9.jpg', title: 'Atmosfera', year: '2024' },
-    { id: 10, category: 'Urban & Street', image: './slika10.jpg', title: 'Mestni Fragment I', year: '2024' },
-    { id: 11, category: 'Urban & Street', image: './slika11.jpg', title: 'Linije mesta', year: '2024' },
-    { id: 12, category: 'Lifestyle & Details', image: './slika12.jpg', title: 'Zimski Minimalizem', year: '2024' },
-    { id: 13, category: 'Urban & Street', image: './slika13.jpg', title: 'Arhitekturni Ritmi', year: '2024' },
-    { id: 14, category: 'Lifestyle & Details', image: './slika14.jpg', title: 'Naravni Kontrast', year: '2024' },
-    { id: 15, category: 'Urban & Street', image: './slika15.jpg', title: 'Mestna Silhueta', year: '2024' },
-    { id: 16, category: 'Urban & Street', image: './slika16.jpg', title: 'Strukturni Dialog', year: '2024' },
-    { id: 17, category: 'Urban & Street', image: './slika17.jpg', title: 'Mestni Prehod', year: '2024' },
-    { id: 18, category: 'Urban & Street', image: './slika18.jpg', title: 'Perspektiva Ulice', year: '2024' },
-    { id: 19, category: 'Lifestyle & Details', image: './slika19.jpg', title: 'Trenutek Miru', year: '2024' },
-    { id: 20, category: 'Urban & Street', image: './slika20.jpg', title: 'Urbana Kompozicija', year: '2024' },
-    { id: 21, category: 'Lifestyle & Details', image: './slika21.jpg', title: 'Abstrakcija I', year: '2024' },
-    { id: 22, category: 'Lifestyle & Details', image: './slika22.jpg', title: 'Fokus na Detajl', year: '2024' },
-    { id: 23, category: 'Lifestyle & Details', image: './slika23.jpg', title: 'Abstrakcija II', year: '2024' },
-    { id: 24, category: 'Urban & Street', image: './slika24.jpg', title: 'Mestni Utrip', year: '2024' },
-    { id: 25, category: 'Lifestyle & Details', image: './slika25.jpg', title: 'Večerni Detajl', year: '2024' }
-  ];
 
   const filteredProducts = filter === 'Vse' ? products : products.filter(p => p.category === filter);
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -90,8 +107,8 @@ const Gallery: React.FC = () => {
               <button 
                 key={cat}
                 onClick={() => handleFilterChange(cat)}
-                className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 whitespace-nowrap ${
-                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-zinc-300'
+                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 whitespace-nowrap ${
+                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-white'
                 }`}
               >
                 {cat}
@@ -100,7 +117,7 @@ const Gallery: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {currentProducts.map((product) => (
             <div 
               key={product.id} 
@@ -112,10 +129,6 @@ const Gallery: React.FC = () => {
                 alt={product.title}
                 loading="lazy"
                 className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-1000"
-                onError={(e) => {
-                  // Fallback na placeholder v primeru, da lokalna slika ne obstaja
-                  (e.target as HTMLImageElement).src = `https://via.placeholder.com/800x1000/1a1a1a/333333?text=${product.title.replace(/ /g, '+')}`;
-                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-8 pointer-events-none">
                 <span className="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">{product.category}</span>
@@ -167,9 +180,6 @@ const Gallery: React.FC = () => {
               src={selectedProduct.image} 
               alt={selectedProduct.title}
               className="max-w-full max-h-[80vh] object-contain shadow-2xl"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = `https://via.placeholder.com/1200x1600/1a1a1a/333333?text=${selectedProduct.title.replace(/ /g, '+')}`;
-              }}
             />
             <div className="text-center">
               <span className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedProduct.category}</span>
