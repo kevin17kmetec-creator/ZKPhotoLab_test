@@ -52,7 +52,11 @@ const Gallery: React.FC = () => {
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Namesto vrha strani se pomaknemo na vrh sekcije Portfelj
+    const element = document.getElementById('gallery');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const handleFilterChange = (cat: string) => {

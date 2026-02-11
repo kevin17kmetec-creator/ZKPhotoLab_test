@@ -15,9 +15,9 @@ const About: React.FC<AboutProps> = ({ onNavigate, isCompact = false }) => {
           <div className="relative">
             <div className="aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/5">
               <img 
-                src="https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000" 
+                src="https://lh3.googleusercontent.com/u/0/d/1Rh6SJriQABe_vjJHYxUROR4JLE3-AHhf" 
                 alt="Žiga Kučiš" 
-                className="w-full h-full object-cover filter grayscale opacity-60 hover:opacity-100 transition-all duration-700"
+                className="w-full h-full object-cover filter grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-700"
               />
             </div>
             <div className="absolute -bottom-8 -right-8 w-56 border border-white/5 bg-[#0a0a0a] p-8 hidden md:flex flex-col justify-end">
