@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Camera, MapPin, Layers, ArrowRight } from 'lucide-react';
 import { ViewType } from '../App';

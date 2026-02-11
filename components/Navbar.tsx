@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Instagram } from 'lucide-react';
 import { ViewType } from '../App';
@@ -47,7 +46,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           <span className="font-medium tracking-widest text-sm uppercase hidden sm:block">Photolab</span>
         </button>
 
-        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-12">
           {navLinks.map((link) => (
             <button 
@@ -70,7 +68,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           </a>
         </div>
 
-        {/* Mobile Toggle */}
         <button 
           className="md:hidden text-zinc-100 outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -79,7 +76,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <div 
         className={`fixed inset-0 bg-black z-40 flex flex-col items-center justify-center transition-transform duration-500 md:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'

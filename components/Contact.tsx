@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Mail, Instagram, Send, Check } from 'lucide-react';
 
@@ -8,7 +7,6 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    // Simulacija pošiljanja
     setTimeout(() => {
       setStatus('success');
       setTimeout(() => setStatus('idle'), 3000);

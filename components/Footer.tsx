@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Instagram, ArrowUp } from 'lucide-react';
 import { ViewType } from '../App';

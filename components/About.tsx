@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ViewType } from '../App';
 import { ArrowRight } from 'lucide-react';

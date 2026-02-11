@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -15,7 +14,6 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Pomik na vrh ob menjavi strani in upravljanje gumba za vrh
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -64,7 +62,6 @@ const App: React.FC = () => {
       </main>
       <Footer onNavigate={setCurrentView} />
 
-      {/* Floating Back to Top Button */}
       <button
         onClick={scrollToTop}
         className={`fixed bottom-8 right-8 w-12 h-12 bg-white text-black border border-white shadow-2xl flex items-center justify-center transition-all duration-500 z-[100] ${
