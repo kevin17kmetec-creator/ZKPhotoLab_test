@@ -10,8 +10,7 @@ interface Product {
 }
 
 const Gallery: React.FC = () => {
-  // Podatki so vključeni neposredno v kodo. Nič se ne nalaga iz zunanjih JSON datotek.
-  // Uporabljamo placeholder slike z Unsplash za takojšen vizualni učinek.
+  // Podatki so ročno zapisani tukaj. Brez fetch(), brez products.json.
   const products: Product[] = [
     { 
       id: 1, 
@@ -172,7 +171,7 @@ const Gallery: React.FC = () => {
           className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500"
           onClick={closeLightbox}
         >
-          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
+          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]" onClick={closeLightbox}>
             <X size={32} />
           </button>
           <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
