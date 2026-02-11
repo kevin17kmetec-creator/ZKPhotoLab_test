@@ -1,0 +1,70 @@
+
+{
+  "works": [
+    {
+      "id": 1,
+      "title": "URBAN ECHOES",
+      "category": "Street",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1200",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "COLD VENEZIA",
+      "category": "Travel",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1200",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "MONOLITH",
+      "category": "Architecture",
+      "year": "2023",
+      "image": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1200",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "title": "HUMAN NATURE",
+      "category": "Portrait",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1200",
+      "featured": true
+    },
+    {
+      "id": 5,
+      "title": "CONCRETE JUNGLE",
+      "category": "Street",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200",
+      "featured": false
+    },
+    {
+      "id": 6,
+      "title": "NIGHT PULSE",
+      "category": "Documentary",
+      "year": "2023",
+      "image": "https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1200",
+      "featured": true
+    }
+  ],
+  "services": [
+    {
+      "id": "01",
+      "title": "Urban Brand",
+      "description": "Visual storytelling for architectural and street-wear brands."
+    },
+    {
+      "id": "02",
+      "title": "Lifestyle Editorial",
+      "description": "Natural lighting portraits with a cinematic atmosphere."
+    },
+    {
+      "id": "03",
+      "title": "Content Lab",
+      "description": "Customized visual content for digital platforms."
+    }
+  ]
+}

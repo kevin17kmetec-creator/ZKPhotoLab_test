@@ -1,69 +1,54 @@
-import React, { useState } from 'react';
-import { X, Maximize2 } from 'lucide-react';
 
-// Podatki so definirani neposredno v kodi za maksimalno hitrost in zanesljivost.
-// Uporabljamo Unsplash slike, ki odražajo "Urban & Lifestyle" estetiko ZK Photolab.
-const products = [
-  { 
-    id: 1, 
-    category: 'Urban & Street', 
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Urbana Vizija', 
-    year: '2024' 
-  },
-  { 
-    id: 2, 
-    category: 'Lifestyle & Details', 
-    image: 'https://images.unsplash.com/photo-1517503733527-571343774119?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Zimski Detajl', 
-    year: '2024' 
-  },
-  { 
-    id: 3, 
-    category: 'Urban & Street', 
-    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Mestna Arhitektura', 
-    year: '2023' 
-  },
-  { 
-    id: 4, 
-    category: 'Lifestyle & Details', 
-    image: 'https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Fokus na Trenutek', 
-    year: '2024' 
-  },
-  { 
-    id: 5, 
-    category: 'Urban & Street', 
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Geometrija Mesta', 
-    year: '2024' 
-  },
-  { 
-    id: 6, 
-    category: 'Urban & Street', 
-    image: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&q=80&w=1000', 
-    title: 'Odmev Ulice', 
-    year: '2023' 
-  }
-];
+import React, { useState, useEffect } from 'react';
+import { X, Maximize2, Loader2 } from 'lucide-react';
+
+interface Work {
+  id: number;
+  title: string;
+  category: string;
+  year: string;
+  image: string;
+}
 
 const Gallery: React.FC = () => {
+  const [works, setWorks] = useState<Work[]>([]);
   const [filter, setFilter] = useState('Vse');
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [selectedWork, setSelectedWork] = useState<Work | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
-  const filteredProducts = filter === 'Vse' ? products : products.filter(p => p.category === filter);
+  useEffect(() => {
+    fetch('/products.json')
+      .then(res => res.json())
+      .then(data => {
+        setWorks(data.works);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load products.json", err);
+        setLoading(false);
+      });
+  }, []);
 
-  const openLightbox = (product: any) => {
-    setSelectedProduct(product);
+  const categories = ['Vse', ...new Set(works.map(w => w.category))];
+  const filteredWorks = filter === 'Vse' ? works : works.filter(w => w.category === filter);
+
+  const openLightbox = (work: Work) => {
+    setSelectedWork(work);
     document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
-    setSelectedProduct(null);
+    setSelectedWork(null);
     document.body.style.overflow = 'auto';
   };
+
+  if (loading) {
+    return (
+      <div className="h-96 flex items-center justify-center">
+        <Loader2 className="animate-spin text-zinc-600" size={32} />
+      </div>
+    );
+  }
 
   return (
     <section id="gallery" className="py-24 bg-[#0d0d0d] text-white">
@@ -75,7 +60,7 @@ const Gallery: React.FC = () => {
               IZBRANA <span className="font-serif italic font-normal text-zinc-400">DELA.</span>
             </h2>
           </div>
-          <div className="flex flex-wrap gap-6 md:gap-12">
+          <div className="flex flex-wrap gap-6 md:gap-10">
             {categories.map((cat) => (
               <button 
                 key={cat}
@@ -91,24 +76,24 @@ const Gallery: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product) => (
+          {filteredWorks.map((work) => (
             <div 
-              key={product.id} 
-              onClick={() => openLightbox(product)}
+              key={work.id} 
+              onClick={() => openLightbox(work)}
               className="relative group overflow-hidden aspect-[4/5] bg-zinc-900 border border-white/5 cursor-pointer"
             >
               <img 
-                src={product.image} 
-                alt={product.title}
+                src={work.image} 
+                alt={work.title}
                 loading="lazy"
                 className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-8 pointer-events-none">
-                <span className="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">{product.category}</span>
+                <span className="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">{work.category}</span>
                 <div className="flex justify-between items-end">
                   <div>
-                    <h3 className="text-xl font-bold tracking-widest uppercase">{product.title}</h3>
-                    <p className="text-[10px] text-zinc-500 mt-2 tracking-[0.3em]">{product.year}</p>
+                    <h3 className="text-xl font-bold tracking-widest uppercase">{work.title}</h3>
+                    <p className="text-[10px] text-zinc-500 mt-2 tracking-[0.3em]">{work.year}</p>
                   </div>
                   <Maximize2 size={16} className="text-white/40 mb-1" />
                 </div>
@@ -118,24 +103,24 @@ const Gallery: React.FC = () => {
         </div>
       </div>
 
-      {selectedProduct && (
+      {selectedWork && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
+          className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-md flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-500"
           onClick={closeLightbox}
         >
           <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
             <X size={32} />
           </button>
-          <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-6xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
             <img 
-              src={selectedProduct.image} 
-              alt={selectedProduct.title}
-              className="max-w-full max-h-[80vh] object-contain shadow-2xl"
+              src={selectedWork.image} 
+              alt={selectedWork.title}
+              className="max-w-full max-h-[85vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)]"
             />
             <div className="text-center">
-              <span className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedProduct.category}</span>
-              <h3 className="text-2xl font-bold tracking-widest uppercase mb-1">{selectedProduct.title}</h3>
-              <p className="text-zinc-600 text-[10px] uppercase tracking-[0.3em]">{selectedProduct.year}</p>
+              <span className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedWork.category}</span>
+              <h3 className="text-2xl font-bold tracking-widest uppercase mb-1">{selectedWork.title}</h3>
+              <p className="text-zinc-600 text-[10px] uppercase tracking-[0.3em]">{selectedWork.year}</p>
             </div>
           </div>
         </div>
