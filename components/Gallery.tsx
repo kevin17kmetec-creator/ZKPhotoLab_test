@@ -18,6 +18,7 @@ const Gallery: React.FC = () => {
 
   const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
 
+  // Vsi podatki so zapisani neposredno tukaj (hardcoded)
   const photos: Photo[] = [
     { id: 1, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/u/0/d/13Ogvsxrq-LJZe5y_0N5v-Hloj_Aj8g-C', title: 'Urbana Vizija', year: '2024' },
     { id: 2, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/u/0/d/18N-XBLPJKAUP6UE1wwGwUs827zuziHZz', title: 'Zimski Detajl I', year: '2024' },
@@ -42,7 +43,6 @@ const Gallery: React.FC = () => {
     { id: 21, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/d/1EM5T6ZriZjhF0J1n8AK12pQrpvOGGZyP', title: 'Abstrakcija I', year: '2024' },
     { id: 22, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/d/1KDfa6aUel-Q9_z9jMoHWaamtaeHpd2GE', title: 'Fokus na Detajl', year: '2024' },
     { id: 23, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/d/1L4EiTxkdTaBQCxzAO169zIk3aErZJ0oQ', title: 'Abstrakcija II', year: '2024' }
-    // Zadnja slika (ID 24) odstranjena zaradi težav s prikazom.
   ];
 
   const filteredPhotos = filter === 'Vse' ? photos : photos.filter(p => p.category === filter);
@@ -95,7 +95,6 @@ const Gallery: React.FC = () => {
           </div>
         </div>
 
-        {/* Grid Container - 2 v vrsti */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           {currentPhotos.map((photo) => (
             <div 
@@ -123,7 +122,6 @@ const Gallery: React.FC = () => {
           ))}
         </div>
 
-        {/* Paginacija */}
         {totalPages > 1 && (
           <div className="mt-20 flex justify-center items-center gap-4">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
@@ -147,27 +145,20 @@ const Gallery: React.FC = () => {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
       {selectedPhoto && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500 animate-in fade-in"
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500"
           onClick={closeLightbox}
         >
-          <button 
-            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]"
-            onClick={closeLightbox}
-          >
+          <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
             <X size={32} />
           </button>
-          
           <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
-            <div className="w-full h-[80vh] flex items-center justify-center">
-              <img 
-                src={selectedPhoto.url} 
-                alt={selectedPhoto.title}
-                className="max-w-full max-h-full object-contain shadow-2xl animate-in zoom-in-95 duration-500"
-              />
-            </div>
+            <img 
+              src={selectedPhoto.url} 
+              alt={selectedPhoto.title}
+              className="max-w-full max-h-[80vh] object-contain shadow-2xl"
+            />
             <div className="text-center">
               <span className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedPhoto.category}</span>
               <h3 className="text-2xl font-bold tracking-widest uppercase mb-1">{selectedPhoto.title}</h3>
