@@ -39,16 +39,10 @@ const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
               USTVARJANJE <br />
               <span className="font-serif italic font-normal text-zinc-400">VIZIJE.</span>
             </h2>
-            <div className="aspect-[16/10] overflow-hidden bg-zinc-900 border border-white/5">
-               <img 
-                src="https://images.unsplash.com/photo-1505151225562-efc8e265c7c2?auto=format&fit=crop&q=80&w=1000" 
-                alt="Service detail" 
-                className="w-full h-full object-cover grayscale brightness-50 opacity-80 hover:scale-105 transition-transform duration-1000"
-               />
-            </div>
+            
             <button 
               onClick={() => onNavigate('contact')}
-              className="mt-12 px-10 py-5 border border-white/20 text-white text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-white/10 transition-all flex items-center gap-4 group"
+              className="mt-6 px-10 py-5 border border-white/20 text-white text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-white/10 transition-all flex items-center gap-4 group"
             >
               Povpraševanje
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
