@@ -27,7 +27,7 @@ export default async function handler(req: any, res: any) {
     const data = await resend.emails.send({
       // Za Resend testni način mora biti pošiljatelj izključno onboarding@resend.dev
       from: 'onboarding@resend.dev',
-      to: 'kevin17kmetec@gmail.com',
+      to: 'zigakucis13@gmail.com',
       // Fix: Changed 'reply_to' to 'replyTo' to fix TypeScript property error
       replyTo: email,
       subject: `Povpraševanje: ${name} [${type}]`,
