@@ -1,12 +1,20 @@
 
 import React, { useState } from 'react';
 import { Mail, Instagram, Send, Check } from 'lucide-react';
+import { ViewType } from '../App';
 
-const Contact: React.FC = () => {
+interface ContactProps {
+  onNavigate?: (view: ViewType) => void;
+}
+
+const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [consent, setConsent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) return;
+    
     setStatus('sending');
     setTimeout(() => {
       setStatus('success');
@@ -88,9 +96,31 @@ const Contact: React.FC = () => {
                   className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
                 ></textarea>
               </div>
+
+              {/* GDPR Consent Checkbox */}
+              <div className="flex items-start gap-3 py-2">
+                <input 
+                  type="checkbox" 
+                  id="gdpr-consent"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-1 w-4 h-4 bg-black border-white/20 rounded accent-white cursor-pointer"
+                />
+                <label htmlFor="gdpr-consent" className="text-[10px] leading-relaxed text-zinc-400 tracking-wide cursor-pointer">
+                  Strinjam se z obdelavo mojih osebnih podatkov za namen odgovora na moje povpraševanje v skladu s{' '}
+                  <button 
+                    type="button"
+                    onClick={() => onNavigate && onNavigate('privacy')}
+                    className="underline decoration-white/20 underline-offset-2 hover:text-white transition-colors"
+                  >
+                    Politiko zasebnosti
+                  </button>.
+                </label>
+              </div>
+
               <button 
                 type="submit"
-                disabled={status !== 'idle'}
+                disabled={status !== 'idle' || !consent}
                 className={`w-full py-4 font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-2 ${
                   status === 'success' ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-400'
                 }`}
@@ -99,6 +129,11 @@ const Contact: React.FC = () => {
                 {status === 'sending' && "Pošiljanje..."}
                 {status === 'success' && <>Poslano <Check size={14} /></>}
               </button>
+
+              {/* Informational Text */}
+              <p className="text-[9px] leading-relaxed text-zinc-500 tracking-wider text-justify mt-6">
+                Vaše podatke (ime in e-naslov) bomo uporabili izključno za komunikacijo z vami glede vašega povpraševanja. Podatkov ne bomo delili s tretjimi osebami ali jih uporabljali za namene oglaševanja brez vaše dodatne privolitve. Svojo privolitev lahko kadarkoli prekličete s sporočilom na <span className="text-zinc-400">info@zkphotolab.si</span>.
+              </p>
             </form>
           </div>
         </div>

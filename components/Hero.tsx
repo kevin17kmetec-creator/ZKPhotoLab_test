@@ -30,7 +30,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
       <div className="container mx-auto px-6 relative z-10 pt-20">
         <div className="max-w-4xl">
-          <p className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-4">Žiga Kučiš | Fotografija</p>
+          <p className="text-zinc-300 uppercase tracking-[0.5em] text-[10px] font-bold mb-4">Žiga Kučiš | Fotograf</p>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9] mb-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-[4000ms]">
             URBANA <br />
             <span className="font-serif italic font-normal text-zinc-400">ESTETIKA</span>

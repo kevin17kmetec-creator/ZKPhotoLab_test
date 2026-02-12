@@ -8,9 +8,10 @@ import Services from './components/Services';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SplashIntro from './components/SplashIntro';
+import PrivacyPolicy from './components/PrivacyPolicy';
 import { ArrowUp } from 'lucide-react';
 
-export type ViewType = 'home' | 'about' | 'gallery' | 'services' | 'contact';
+export type ViewType = 'home' | 'about' | 'gallery' | 'services' | 'contact' | 'privacy';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
@@ -57,7 +58,7 @@ const App: React.FC = () => {
             <About isCompact onNavigate={setCurrentView} />
             <Gallery />
             <Services onNavigate={setCurrentView} />
-            <Contact />
+            <Contact onNavigate={setCurrentView} />
           </div>
         );
       case 'about':
@@ -67,7 +68,9 @@ const App: React.FC = () => {
       case 'services':
         return <div className="pt-20 animate-in fade-in duration-500"><Services onNavigate={setCurrentView} /></div>;
       case 'contact':
-        return <div className="pt-20 animate-in fade-in duration-500"><Contact /></div>;
+        return <div className="pt-20 animate-in fade-in duration-500"><Contact onNavigate={setCurrentView} /></div>;
+      case 'privacy':
+        return <div className="pt-20 animate-in fade-in duration-500"><PrivacyPolicy onNavigate={setCurrentView} /></div>;
       default:
         return <Hero onNavigate={setCurrentView} />;
     }
