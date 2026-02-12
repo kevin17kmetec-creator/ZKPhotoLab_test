@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mail, Instagram, Send, Check } from 'lucide-react';
+import { Mail, Instagram, Send, Check, AlertCircle } from 'lucide-react';
 import { ViewType } from '../App';
 
 interface ContactProps {
@@ -8,18 +8,49 @@ interface ContactProps {
 }
 
 const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [consent, setConsent] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    type: 'Urbana Fotografija',
+    message: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!consent) return;
     
     setStatus('sending');
-    setTimeout(() => {
-      setStatus('success');
-      setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+    
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', type: 'Urbana Fotografija', message: '' });
+        setConsent(false);
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 5000);
+      }
+    } catch (error) {
+      console.error('Napaka pri pošiljanju:', error);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   return (
@@ -29,7 +60,7 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
           <div>
             <span className="text-zinc-400 uppercase tracking-[0.5em] text-xs mb-4 block">Kontakt</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
-              ZAČNIMO <span className="font-serif italic font-normal">PROJEKT.</span>
+              ZAČNIMO <span className="font-serif italic font-normal text-zinc-400">PROJEKT.</span>
             </h2>
             
             <div className="space-y-12 mt-16">
@@ -62,6 +93,9 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                 <label className="text-[10px] uppercase tracking-widest text-zinc-400">Ime in Priimek</label>
                 <input 
                   required
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   type="text" 
                   placeholder="Janez Novak"
                   className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
@@ -72,6 +106,9 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   <label className="text-[10px] uppercase tracking-widest text-zinc-400">E-naslov</label>
                   <input 
                     required
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     type="email" 
                     placeholder="janez@example.com"
                     className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
@@ -79,7 +116,12 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-zinc-400">Tip Projekta</label>
-                  <select className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100 appearance-none">
+                  <select 
+                    name="type"
+                    value={formData.type}
+                    onChange={handleChange}
+                    className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100 appearance-none"
+                  >
                     <option>Urbana Fotografija</option>
                     <option>Lifestyle Portret</option>
                     <option>Editorial</option>
@@ -91,6 +133,9 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                 <label className="text-[10px] uppercase tracking-widest text-zinc-400">Sporočilo</label>
                 <textarea 
                   required
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows={4}
                   placeholder="Opišite vašo vizijo..."
                   className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
@@ -120,14 +165,19 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
 
               <button 
                 type="submit"
-                disabled={status !== 'idle' || !consent}
+                disabled={status === 'sending' || !consent}
                 className={`w-full py-4 font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-2 ${
-                  status === 'success' ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-400'
+                  status === 'success' 
+                    ? 'bg-green-600 text-white' 
+                    : status === 'error'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-400'
                 }`}
               >
                 {status === 'idle' && <>Pošlji sporočilo <Send size={14} /></>}
-                {status === 'sending' && "Pošiljanje..."}
-                {status === 'success' && <>Poslano <Check size={14} /></>}
+                {status === 'sending' && "Pošiljam..."}
+                {status === 'success' && <>Sporočilo poslano! <Check size={14} /></>}
+                {status === 'error' && <>Napaka pri pošiljanju <AlertCircle size={14} /></>}
               </button>
 
               {/* Informational Text */}
