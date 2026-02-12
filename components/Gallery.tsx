@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { X, Maximize2 } from 'lucide-react';
+
+import React, { useState, useRef } from 'react';
+import { X, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Photo {
   id: number;
@@ -11,9 +12,11 @@ interface Photo {
 
 const Gallery: React.FC = () => {
   const [filter, setFilter] = useState('Vse');
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  
+  const sectionRef = useRef<HTMLElement>(null);
 
   const categories = ['Vse', 'Urban & Street', 'Lifestyle & Details'];
 
@@ -46,16 +49,15 @@ const Gallery: React.FC = () => {
   const filteredPhotos = filter === 'Vse' ? photos : photos.filter(p => p.category === filter);
   const totalPages = Math.ceil(filteredPhotos.length / itemsPerPage);
   
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPhotos = filteredPhotos.slice(indexOfFirstItem, indexOfLastItem);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentPhotos = filteredPhotos.slice(startIndex, startIndex + itemsPerPage);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    // Namesto vrha strani se pomaknemo na vrh sekcije Portfelj
-    const element = document.getElementById('gallery');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (sectionRef.current) {
+      const offset = 80; 
+      const top = sectionRef.current.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
@@ -75,7 +77,7 @@ const Gallery: React.FC = () => {
   };
 
   return (
-    <section id="gallery" className="py-24 bg-[#0d0d0d] text-white">
+    <section id="gallery" ref={sectionRef} className="py-24 bg-[#0d0d0d] text-white">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div>
@@ -88,7 +90,7 @@ const Gallery: React.FC = () => {
                 key={cat}
                 onClick={() => handleFilterChange(cat)}
                 className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 whitespace-nowrap ${
-                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-zinc-300'
+                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-white'
                 }`}
               >
                 {cat}
@@ -97,54 +99,78 @@ const Gallery: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentPhotos.map((photo) => (
             <div 
               key={photo.id} 
+              className="group relative cursor-pointer animate-in fade-in zoom-in-95 duration-700"
               onClick={() => openLightbox(photo)}
-              className="relative group overflow-hidden aspect-[4/5] bg-zinc-900 border border-white/5 cursor-pointer"
             >
-              <img 
-                src={photo.url} 
-                alt={photo.title}
-                loading="lazy"
-                className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-8 pointer-events-none">
-                <span className="text-[9px] uppercase tracking-widest text-zinc-400 mb-2">{photo.category}</span>
-                <div className="flex justify-between items-end">
-                  <div>
-                    <h3 className="text-xl font-bold tracking-widest uppercase">{photo.title}</h3>
-                    <p className="text-[10px] text-zinc-500 mt-2 tracking-[0.3em]">{photo.year}</p>
-                  </div>
-                  <Maximize2 size={16} className="text-white/40 mb-1" />
+              <div className="aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/5 relative">
+                <img 
+                  src={photo.url} 
+                  alt={photo.title}
+                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                  <Maximize2 className="text-white" size={24} />
                 </div>
+              </div>
+              <div className="mt-4 flex justify-between items-start opacity-60 group-hover:opacity-100 transition-opacity">
+                <div>
+                   <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold mb-1">{photo.title}</h3>
+                   <span className="text-[9px] uppercase tracking-widest text-zinc-600">{photo.category}</span>
+                </div>
+                <span className="text-[9px] font-serif italic text-zinc-500">{photo.year}</span>
               </div>
             </div>
           ))}
         </div>
 
+        {/* Pagination Controls */}
         {totalPages > 1 && (
-          <div className="mt-20 flex justify-center items-center gap-4">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-              <button
-                key={number}
-                onClick={() => handlePageChange(number)}
-                className={`w-12 h-12 flex items-center justify-center text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                  currentPage === number 
-                    ? 'bg-white text-black border-white' 
-                    : 'text-zinc-500 border-white/10 hover:border-white/40'
-                }`}
+          <div className="mt-20 flex flex-col items-center gap-6">
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="w-12 h-12 border border-white/10 flex items-center justify-center hover:bg-white/5 disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+                aria-label="Prejšnja stran"
               >
-                {String(number).padStart(2, '0')}
+                <ChevronLeft size={20} />
               </button>
-            ))}
+
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`w-12 h-12 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                      currentPage === pageNum 
+                        ? 'bg-white text-black' 
+                        : 'border border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+              </div>
+
+              <button 
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="w-12 h-12 border border-white/10 flex items-center justify-center hover:bg-white/5 disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+                aria-label="Naslednja stran"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+            
+            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-700">
+              Stran {currentPage} od {totalPages}
+            </p>
           </div>
         )}
-
-        <div className="mt-12 text-center text-zinc-600 text-[10px] uppercase tracking-[0.4em]">
-          Prikazano {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredPhotos.length)} od {filteredPhotos.length}
-        </div>
       </div>
 
       {selectedPhoto && (
