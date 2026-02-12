@@ -73,7 +73,7 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                 </div>
                 <div>
                   <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">E-pošta</h4>
-                  <p className="text-zinc-200">zigakucis13@gmail.com</p>
+                  <p className="text-zinc-200">info@zkphotolab.si</p>
                 </div>
               </div>
 
