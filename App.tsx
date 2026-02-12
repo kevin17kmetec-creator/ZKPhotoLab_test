@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -16,6 +17,13 @@ const App: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isIntroActive, setIsIntroActive] = useState(true);
 
+  // Memoize the intro completion handler to prevent SplashIntro from re-triggering 
+  // its useEffect when App re-renders due to scroll events.
+  const handleIntroComplete = useCallback(() => {
+    setIsIntroActive(false);
+    document.body.style.overflow = 'auto';
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -26,6 +34,15 @@ const App: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentView]);
+
+  // Lock scroll when intro is active to prevent layout shifts and restart issues
+  useEffect(() => {
+    if (isIntroActive) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isIntroActive]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -58,7 +75,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-zinc-100 selection:bg-zinc-700 selection:text-white flex flex-col relative">
-      {isIntroActive && <SplashIntro onComplete={() => setIsIntroActive(false)} />}
+      {isIntroActive && <SplashIntro onComplete={handleIntroComplete} />}
       
       <Navbar currentView={currentView} onNavigate={setCurrentView} />
       
