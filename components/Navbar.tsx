@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Instagram } from 'lucide-react';
 import { ViewType } from '../App';
@@ -52,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               key={link.id} 
               onClick={() => handleNavClick(link.id)}
               className={`text-[10px] uppercase tracking-[0.2em] transition-colors outline-none ${
-                currentView === link.id ? 'text-white font-bold' : 'text-zinc-500 hover:text-white'
+                currentView === link.id ? 'text-white font-bold' : 'text-zinc-400 hover:text-white'
               }`}
             >
               {link.name}
@@ -87,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               key={link.id} 
               onClick={() => handleNavClick(link.id)}
               className={`text-2xl uppercase tracking-[0.3em] transition-all ${
-                currentView === link.id ? 'text-white' : 'text-zinc-600'
+                currentView === link.id ? 'text-white' : 'text-zinc-400'
               }`}
             >
               {link.name}
@@ -98,7 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             href="https://www.instagram.com/zkphotolab" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-zinc-500 hover:text-white"
+            className="text-zinc-400 hover:text-white"
           >
             <Instagram size={24} />
           </a>

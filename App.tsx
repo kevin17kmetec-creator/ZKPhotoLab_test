@@ -6,6 +6,7 @@ import Gallery from './components/Gallery';
 import Services from './components/Services';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import SplashIntro from './components/SplashIntro';
 import { ArrowUp } from 'lucide-react';
 
 export type ViewType = 'home' | 'about' | 'gallery' | 'services' | 'contact';
@@ -13,6 +14,7 @@ export type ViewType = 'home' | 'about' | 'gallery' | 'services' | 'contact';
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isIntroActive, setIsIntroActive] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,10 +58,14 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-zinc-100 selection:bg-zinc-700 selection:text-white flex flex-col relative">
+      {isIntroActive && <SplashIntro onComplete={() => setIsIntroActive(false)} />}
+      
       <Navbar currentView={currentView} onNavigate={setCurrentView} />
-      <main className="flex-grow">
+      
+      <main className={`flex-grow transition-opacity duration-1000 ${isIntroActive ? 'opacity-100' : 'opacity-100'}`}>
         {renderContent()}
       </main>
+      
       <Footer onNavigate={setCurrentView} />
 
       <button

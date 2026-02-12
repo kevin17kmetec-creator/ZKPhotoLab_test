@@ -33,7 +33,6 @@ const Gallery: React.FC = () => {
     { id: 10, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/d/1-4dI0iBreAZmg8WHRAlEcDjL4q274vWC', title: 'Mestni Fragment I', year: '2024' },
     { id: 11, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/d/114Vbox1gjMlvTVOl4kyGNS9xdQkwPgMU', title: 'Linije mesta', year: '2024' },
     { id: 12, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/d/125aLggNiF4ZLLlioJBYVVO3h2ixLDkkf', title: 'Zimski Minimalizem', year: '2024' },
-    { id: 13, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/d/147ObkddLLQgZAwTsxFQRnxjIPo8Xgr5L', title: 'Arhitekturni Ritmi', year: '2024' },
     { id: 14, category: 'Lifestyle & Details', url: 'https://lh3.googleusercontent.com/d/181RfbfgxH3vIUsEV8-EGq391MCivE-c5', title: 'Naravni Kontrast', year: '2024' },
     { id: 15, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/d/19x_02ObWWuJ5QfH1msCCdVKjzco2isfu', title: 'Mestna Silhueta', year: '2024' },
     { id: 16, category: 'Urban & Street', url: 'https://lh3.googleusercontent.com/d/1WoVvYGCZuC_AidovDQR9I_F2MV0hd2lw', title: 'Strukturni Dialog', year: '2024' },
@@ -81,7 +80,7 @@ const Gallery: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div>
-            <span className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] mb-4 block">Portfelj</span>
+            <span className="text-zinc-400 uppercase tracking-[0.5em] text-[10px] mb-4 block">Portfelj</span>
             <h2 className="text-4xl font-bold tracking-tight uppercase">IZBRANA <span className="font-serif italic font-normal text-zinc-400">DELA.</span></h2>
           </div>
           <div className="flex flex-wrap gap-6 md:gap-12 overflow-x-auto pb-2 scrollbar-hide">
@@ -90,7 +89,7 @@ const Gallery: React.FC = () => {
                 key={cat}
                 onClick={() => handleFilterChange(cat)}
                 className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 whitespace-nowrap ${
-                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-500 hover:text-white'
+                  filter === cat ? 'text-white border-b border-white pb-1' : 'text-zinc-400 hover:text-white'
                 }`}
               >
                 {cat}
@@ -119,9 +118,9 @@ const Gallery: React.FC = () => {
               <div className="mt-4 flex justify-between items-start opacity-60 group-hover:opacity-100 transition-opacity">
                 <div>
                    <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold mb-1">{photo.title}</h3>
-                   <span className="text-[9px] uppercase tracking-widest text-zinc-600">{photo.category}</span>
+                   <span className="text-[9px] uppercase tracking-widest text-zinc-400">{photo.category}</span>
                 </div>
-                <span className="text-[9px] font-serif italic text-zinc-500">{photo.year}</span>
+                <span className="text-[9px] font-serif italic text-zinc-400">{photo.year}</span>
               </div>
             </div>
           ))}
@@ -148,7 +147,7 @@ const Gallery: React.FC = () => {
                     className={`w-12 h-12 text-[10px] font-bold uppercase tracking-widest transition-all ${
                       currentPage === pageNum 
                         ? 'bg-white text-black' 
-                        : 'border border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
+                        : 'border border-white/10 text-zinc-400 hover:text-white hover:border-white/30'
                     }`}
                   >
                     {pageNum}
@@ -166,7 +165,7 @@ const Gallery: React.FC = () => {
               </button>
             </div>
             
-            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-700">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
               Stran {currentPage} od {totalPages}
             </p>
           </div>
@@ -175,28 +174,28 @@ const Gallery: React.FC = () => {
 
       {selectedPhoto && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500 animate-in fade-in"
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 transition-all duration-500 animate-in fade-in cursor-default"
           onClick={closeLightbox}
         >
           <button 
-            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]"
+            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110] cursor-pointer"
             onClick={closeLightbox}
           >
             <X size={32} />
           </button>
           
-          <div className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6" onClick={(e) => e.stopPropagation()}>
-            <div className="w-full h-[80vh] flex items-center justify-center">
+          <div className="relative max-w-5xl flex flex-col items-center justify-center gap-6 cursor-default" onClick={(e) => e.stopPropagation()}>
+            <div className="w-full flex items-center justify-center">
               <img 
                 src={selectedPhoto.url} 
                 alt={selectedPhoto.title}
-                className="max-w-full max-h-full object-contain shadow-2xl animate-in zoom-in-95 duration-500"
+                className="max-w-full max-h-[80vh] object-contain shadow-2xl animate-in zoom-in-95 duration-500"
               />
             </div>
             <div className="text-center">
-              <span className="text-zinc-500 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedPhoto.category}</span>
+              <span className="text-zinc-400 uppercase tracking-[0.5em] text-[10px] mb-2 block">{selectedPhoto.category}</span>
               <h3 className="text-2xl font-bold tracking-widest uppercase mb-1">{selectedPhoto.title}</h3>
-              <p className="text-zinc-600 text-[10px] uppercase tracking-[0.3em]">{selectedPhoto.year}</p>
+              <p className="text-zinc-500 text-[10px] uppercase tracking-[0.3em]">{selectedPhoto.year}</p>
             </div>
           </div>
         </div>

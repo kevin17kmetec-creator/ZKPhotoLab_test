@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Instagram, ArrowUp } from 'lucide-react';
 import { ViewType } from '../App';
@@ -30,10 +31,10 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
                 <span className="font-medium tracking-[0.3em] text-[10px] uppercase">Photolab</span>
              </button>
-             <p className="text-[10px] text-zinc-600 uppercase tracking-widest mt-2">© 2025 ZK Photolab. Vse pravice pridržane.</p>
+             <p className="text-[10px] text-zinc-400 uppercase tracking-widest mt-2">© 2025 ZK Photolab. Vse pravice pridržane.</p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
              {navItems.map(item => (
                <button 
                  key={item.id} 
@@ -49,7 +50,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             onClick={scrollToTop}
             className="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors group outline-none"
           >
-            <ArrowUp size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
+            <ArrowUp size={16} className="text-zinc-400 group-hover:text-white transition-colors" />
           </button>
         </div>
 
@@ -58,7 +59,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             href="https://www.instagram.com/zkphotolab" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-zinc-500 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <Instagram size={14} />
             <span className="text-[10px] uppercase tracking-[0.2em]">Sledi na Instagramu</span>

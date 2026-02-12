@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Mail, Instagram, Send, Check } from 'lucide-react';
 
@@ -14,11 +15,11 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-40 bg-[#0a0a0a]">
+    <section id="contact" className="pt-12 md:pt-20 pb-24 md:pb-40 bg-[#0a0a0a]">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div>
-            <span className="text-zinc-500 uppercase tracking-[0.5em] text-xs mb-4 block">Kontakt</span>
+            <span className="text-zinc-400 uppercase tracking-[0.5em] text-xs mb-4 block">Kontakt</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
               ZAČNIMO <span className="font-serif italic font-normal">PROJEKT.</span>
             </h2>
@@ -26,20 +27,20 @@ const Contact: React.FC = () => {
             <div className="space-y-12 mt-16">
               <div className="flex gap-6 items-start">
                 <div className="w-10 h-10 border border-white/10 flex items-center justify-center shrink-0">
-                  <Mail size={18} className="text-zinc-500" />
+                  <Mail size={18} className="text-zinc-400" />
                 </div>
                 <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-600 mb-1">E-pošta</h4>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">E-pošta</h4>
                   <p className="text-zinc-200">zigakucis13@gmail.com</p>
                 </div>
               </div>
 
               <div className="flex gap-6 items-start">
                 <div className="w-10 h-10 border border-white/10 flex items-center justify-center shrink-0">
-                  <Instagram size={18} className="text-zinc-500" />
+                  <Instagram size={18} className="text-zinc-400" />
                 </div>
                 <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-600 mb-1">Social</h4>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Social</h4>
                   <a href="https://www.instagram.com/zkphotolab" target="_blank" className="text-zinc-200 hover:text-white transition-colors underline decoration-white/20 underline-offset-4">@zkphotolab</a>
                 </div>
               </div>
@@ -50,7 +51,7 @@ const Contact: React.FC = () => {
             <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-sm">Pošlji povpraševanje</h3>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-600">Ime in Priimek</label>
+                <label className="text-[10px] uppercase tracking-widest text-zinc-400">Ime in Priimek</label>
                 <input 
                   required
                   type="text" 
@@ -60,7 +61,7 @@ const Contact: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-600">E-naslov</label>
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">E-naslov</label>
                   <input 
                     required
                     type="email" 
@@ -69,7 +70,7 @@ const Contact: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-600">Tip Projekta</label>
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">Tip Projekta</label>
                   <select className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100 appearance-none">
                     <option>Urbana Fotografija</option>
                     <option>Lifestyle Portret</option>
@@ -79,7 +80,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-600">Sporočilo</label>
+                <label className="text-[10px] uppercase tracking-widest text-zinc-400">Sporočilo</label>
                 <textarea 
                   required
                   rows={4}

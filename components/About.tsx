@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ViewType } from '../App';
 import { ArrowRight } from 'lucide-react';
@@ -22,18 +23,18 @@ const About: React.FC<AboutProps> = ({ onNavigate, isCompact = false }) => {
             </div>
             <div className="absolute -bottom-8 -right-8 w-56 border border-white/5 bg-[#0a0a0a] p-8 hidden md:flex flex-col justify-end">
               <span className="text-3xl font-serif italic mb-2">Žiga Kučiš</span>
-              <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-500 leading-relaxed">
+              <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 leading-relaxed">
                 ZK PHOTOLAB
               </p>
             </div>
           </div>
 
           <div>
-            <span className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] mb-6 block">O meni</span>
+            <span className="text-zinc-400 uppercase tracking-[0.5em] text-[10px] mb-6 block">O meni</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8 uppercase">
               NEOPAŽENI <br /> <span className="font-serif italic font-normal text-zinc-400">TRENUTKI.</span>
             </h2>
-            <div className="space-y-6 text-zinc-400 text-sm leading-loose max-w-lg">
+            <div className="space-y-6 text-zinc-300 text-sm leading-loose max-w-lg">
               <p>
                 Sem Žiga Kučiš, fotograf, ki ustvarja pod imenom <strong className="text-zinc-200">ZK Photolab</strong>. Moje delo je posvečeno dokumentiranju neopaženih trenutkov in surovih tekstur urbanega okolja.
               </p>
@@ -57,7 +58,7 @@ const About: React.FC<AboutProps> = ({ onNavigate, isCompact = false }) => {
 
               <div className="pt-8 flex items-center gap-4">
                  <div className="w-12 h-[1px] bg-zinc-700"></div>
-                 <p className="text-zinc-500 text-[10px] uppercase tracking-[0.2em]">Slovenija & Tujina</p>
+                 <p className="text-zinc-400 text-[10px] uppercase tracking-[0.2em]">Slovenija & Tujina</p>
               </div>
             </div>
           </div>
