@@ -10,11 +10,11 @@ export default async function handler(req: any, res: any) {
   // Preverjanje API ključa v okolju
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.error('RESEND_API_KEY ni nastavljen v okoljskih spremenljivkah.');
+    console.error('[Resend Error]: RESEND_API_KEY ni nastavljen v okoljskih spremenljivkah.');
     return res.status(500).json({ error: 'Konfiguracijska napaka: API ključ ni najden.' });
   }
 
-  const { name, email, type, message } = req.body;
+  const { name, email, type, message, phone } = req.body;
 
   // Osnovna validacija vhodnih podatkov
   if (!name || !email || !message) {
@@ -25,54 +25,73 @@ export default async function handler(req: any, res: any) {
 
   try {
     const data = await resend.emails.send({
-      // Posodobljeno na verificirano domeno
+      // Produkcijski pošiljatelj z verificirano domeno
       from: 'ZK Photolab <info@zkphotolab.si>',
       to: 'info@zkphotolab.si',
-      // Reply-to omogoča odgovor direktno stranki
+      // Možnost direktnega odgovora stranki
       replyTo: email,
-      subject: `Novo sporočilo: ${name} - ${type}`,
+      subject: `Novo povpraševanje: ${name}`,
       html: `
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
-            <title>Novo povpraševanje</title>
+            <style>
+              body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+              .container { max-width: 600px; margin: 20px auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
+              .header { background-color: #000; color: #fff; padding: 30px; text-align: center; }
+              .header h1 { margin: 0; font-size: 20px; letter-spacing: 4px; font-weight: 300; }
+              .content { padding: 40px; }
+              .field { margin-bottom: 25px; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; }
+              .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 5px; display: block; }
+              .value { font-size: 16px; color: #1a1a1a; }
+              .message-box { background-color: #f9f9f9; padding: 25px; border-radius: 4px; border-left: 3px solid #000; margin-top: 10px; }
+              .footer { background-color: #fcfcfc; padding: 20px; text-align: center; font-size: 10px; color: #aaa; border-top: 1px solid #eee; }
+            </style>
           </head>
-          <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 40px 0;">
-            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid #000000;">
-              
-              <div style="padding: 40px 50px;">
-                <h1 style="font-size: 14px; font-weight: 700; color: #000000; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 30px 0;">ZK PHOTOLAB</h1>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1>ZK PHOTOLAB</h1>
+              </div>
+              <div class="content">
+                <h2 style="font-size: 18px; margin-bottom: 30px; font-weight: 600;">Prejeto novo sporočilo s spletne strani</h2>
                 
-                <h2 style="font-size: 24px; font-weight: 300; color: #1a1a1a; margin: 0 0 20px 0; line-height: 1.3;">Prejeli ste novo sporočilo od <span style="font-weight: 600;">${name}</span>.</h2>
-                
-                <p style="font-size: 15px; color: #666666; margin-bottom: 30px;">Vsebina povpraševanja prek spletne strani zkphotolab.si:</p>
-                
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-                  <tr>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; width: 30%; font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 1px;">Pošiljatelj</td>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; color: #1a1a1a;">${name}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 1px;">E-naslov</td>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; color: #1a1a1a;"><a href="mailto:${email}" style="color: #000000; text-decoration: none; border-bottom: 1px solid #cccccc;">${email}</a></td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 1px;">Tip projekta</td>
-                    <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; color: #1a1a1a;">${type}</td>
-                  </tr>
-                </table>
-                
-                <div style="background-color: #fafafa; padding: 25px; border-radius: 2px; margin-bottom: 40px;">
-                  <p style="font-size: 12px; color: #999999; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0;">Sporočilo</p>
-                  <p style="font-size: 16px; color: #1a1a1a; margin: 0; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+                <div class="field">
+                  <span class="label">Pošiljatelj</span>
+                  <span class="value"><strong>${name}</strong></span>
                 </div>
                 
-                <a href="mailto:${email}" style="display: inline-block; background-color: #000000; color: #ffffff; text-decoration: none; padding: 18px 30px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px;">Odgovori stranki</a>
+                <div class="field">
+                  <span class="label">E-naslov</span>
+                  <span class="value"><a href="mailto:${email}" style="color: #000; text-decoration: none; border-bottom: 1px dotted #000;">${email}</a></span>
+                </div>
+
+                ${phone ? `
+                <div class="field">
+                  <span class="label">Telefon</span>
+                  <span class="value">${phone}</span>
+                </div>
+                ` : ''}
+                
+                <div class="field">
+                  <span class="label">Tip projekta</span>
+                  <span class="value">${type || 'Ni določeno'}</span>
+                </div>
+                
+                <div class="field" style="border-bottom: none;">
+                  <span class="label">Sporočilo stranke</span>
+                  <div class="message-box">
+                    <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 40px; text-align: center;">
+                  <a href="mailto:${email}" style="background-color: #000; color: #fff; padding: 15px 30px; text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: inline-block;">Odgovori stranki</a>
+                </div>
               </div>
-              
-              <div style="background-color: #000000; padding: 30px 50px; text-align: center;">
-                <p style="font-size: 10px; color: #666666; text-transform: uppercase; letter-spacing: 2px; margin: 0;">&copy; 2025 ZK Photolab | Urban & Lifestyle Photography</p>
+              <div class="footer">
+                Sistemsko obvestilo | Poslano prek zkphotolab.si
               </div>
             </div>
           </body>
@@ -80,9 +99,13 @@ export default async function handler(req: any, res: any) {
       `,
     });
 
+    console.log(`[Resend Success]: Email uspešno poslan za ${name} (${data.data?.id})`);
     return res.status(200).json({ success: true, id: data.data?.id });
   } catch (error: any) {
-    console.error('Resend napaka:', error);
-    return res.status(500).json({ error: 'Prišlo je do napake pri pošiljanju e-pošte.', details: error.message });
+    console.error('[Resend Error]: Napaka pri pošiljanju:', error);
+    return res.status(500).json({ 
+      error: 'Prišlo je do napake pri pošiljanju e-pošte.', 
+      details: error.message 
+    });
   }
 }
