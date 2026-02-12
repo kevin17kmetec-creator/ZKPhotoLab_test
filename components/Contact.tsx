@@ -37,17 +37,20 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && (result.success || result.id)) {
         setStatus('success');
         setFormData({ name: '', email: '', type: 'Urbana Fotografija', message: '' });
         setConsent(false);
         setTimeout(() => setStatus('idle'), 5000);
       } else {
+        console.error('API Error:', result);
         setStatus('error');
         setTimeout(() => setStatus('idle'), 5000);
       }
     } catch (error) {
-      console.error('Napaka pri pošiljanju:', error);
+      console.error('Network Error:', error);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 5000);
     }
