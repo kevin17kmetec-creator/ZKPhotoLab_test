@@ -1,16 +1,21 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Instagram } from 'lucide-react';
-import { ViewType } from '../App';
+import { ViewType, Language } from '../App';
+import { translations } from '../translations';
 
 interface NavbarProps {
   currentView: ViewType;
   onNavigate: (view: ViewType) => void;
+  lang: Language;
+  setLang: (lang: Language) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
+const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, lang, setLang }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const t = translations[lang];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,11 +26,11 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   }, []);
 
   const navLinks: { name: string; id: ViewType }[] = [
-    { name: 'Domov', id: 'home' },
-    { name: 'O meni', id: 'about' },
-    { name: 'Dela', id: 'gallery' },
-    { name: 'Storitve', id: 'services' },
-    { name: 'Kontakt', id: 'contact' },
+    { name: t.nav.home, id: 'home' },
+    { name: t.nav.about, id: 'about' },
+    { name: t.nav.gallery, id: 'gallery' },
+    { name: t.nav.services, id: 'services' },
+    { name: t.nav.contact, id: 'contact' },
   ];
 
   const handleNavClick = (view: ViewType) => {
@@ -47,7 +52,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           <span className="font-medium tracking-widest text-sm uppercase hidden sm:block">Photolab</span>
         </button>
 
-        <div className="hidden md:flex items-center gap-12">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <button 
               key={link.id} 
@@ -59,14 +65,36 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               {link.name}
             </button>
           ))}
-          <a 
-            href="https://www.instagram.com/zkphotolab" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-white transition-colors"
-          >
-            <Instagram size={18} />
-          </a>
+          
+          {/* Vertical Separator with the same gap as links */}
+          <div className="w-[1px] h-4 bg-white/10"></div>
+          
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold">
+               <button 
+                onClick={() => setLang('sl')}
+                className={`transition-colors ${lang === 'sl' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+               >
+                 SL
+               </button>
+               <span className="text-zinc-600">|</span>
+               <button 
+                onClick={() => setLang('en')}
+                className={`transition-colors ${lang === 'en' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+               >
+                 EN
+               </button>
+            </div>
+            
+            <a 
+              href="https://www.instagram.com/zkphotolab" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors flex items-center"
+            >
+              <Instagram size={18} />
+            </a>
+          </div>
         </div>
 
         <button 
@@ -77,6 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </button>
       </div>
 
+      {/* Mobile Menu */}
       <div 
         className={`fixed inset-0 bg-black z-40 flex flex-col items-center justify-center transition-transform duration-500 md:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
@@ -95,11 +124,27 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             </button>
           ))}
           <div className="mt-8 h-[1px] w-12 bg-zinc-800"></div>
+          
+          <div className="flex items-center gap-6 text-xl font-bold tracking-widest">
+               <button 
+                onClick={() => { setLang('sl'); setIsMobileMenuOpen(false); }}
+                className={`transition-colors ${lang === 'sl' ? 'text-white' : 'text-zinc-400'}`}
+               >
+                 SL
+               </button>
+               <button 
+                onClick={() => { setLang('en'); setIsMobileMenuOpen(false); }}
+                className={`transition-colors ${lang === 'en' ? 'text-white' : 'text-zinc-400'}`}
+               >
+                 EN
+               </button>
+          </div>
+
           <a 
             href="https://www.instagram.com/zkphotolab" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-white"
+            className="text-zinc-400 hover:text-white mt-4"
           >
             <Instagram size={24} />
           </a>

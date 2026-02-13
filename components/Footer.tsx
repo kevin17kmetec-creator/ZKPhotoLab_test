@@ -1,23 +1,26 @@
 
 import React from 'react';
 import { Instagram, ArrowUp } from 'lucide-react';
-import { ViewType } from '../App';
+import { ViewType, Language } from '../App';
+import { translations } from '../translations';
 
 interface FooterProps {
   onNavigate: (view: ViewType) => void;
+  lang: Language;
 }
 
-const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+const Footer: React.FC<FooterProps> = ({ onNavigate, lang }) => {
+  const t = translations[lang];
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const navItems: { name: string; id: ViewType }[] = [
-    { name: 'Domov', id: 'home' },
-    { name: 'O meni', id: 'about' },
-    { name: 'Dela', id: 'gallery' },
-    { name: 'Storitve', id: 'services' },
-    { name: 'Kontakt', id: 'contact' },
+    { name: t.nav.home, id: 'home' },
+    { name: t.nav.about, id: 'about' },
+    { name: t.nav.gallery, id: 'gallery' },
+    { name: t.nav.services, id: 'services' },
+    { name: t.nav.contact, id: 'contact' },
   ];
 
   return (
@@ -31,7 +34,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
                 <span className="font-medium tracking-[0.3em] text-[10px] uppercase">Photolab</span>
              </button>
-             <p className="text-[10px] text-zinc-400 uppercase tracking-widest mt-2">© 2025 ZK Photolab. Vse pravice pridržane.</p>
+             <p className="text-[10px] text-zinc-400 uppercase tracking-widest mt-2">{t.footer.rights}</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] uppercase tracking-[0.2em] text-zinc-400">
@@ -62,7 +65,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <Instagram size={14} />
-            <span className="text-[10px] uppercase tracking-[0.2em]">Sledi na Instagramu</span>
+            <span className="text-[10px] uppercase tracking-[0.2em]">{t.footer.follow}</span>
           </a>
         </div>
       </div>

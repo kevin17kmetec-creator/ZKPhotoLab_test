@@ -1,19 +1,22 @@
 
 import React, { useState } from 'react';
 import { Mail, Instagram, Send, Check, AlertCircle } from 'lucide-react';
-import { ViewType } from '../App';
+import { ViewType, Language } from '../App';
+import { translations } from '../translations';
 
 interface ContactProps {
   onNavigate?: (view: ViewType) => void;
+  lang: Language;
 }
 
-const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
+const Contact: React.FC<ContactProps> = ({ onNavigate, lang }) => {
+  const t = translations[lang];
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [consent, setConsent] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    type: 'Urbana Fotografija',
+    type: lang === 'sl' ? 'Urbana Fotografija' : 'Urban Photography',
     message: ''
   });
 
@@ -41,7 +44,12 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
 
       if (response.ok && (result.success || result.id)) {
         setStatus('success');
-        setFormData({ name: '', email: '', type: 'Urbana Fotografija', message: '' });
+        setFormData({ 
+          name: '', 
+          email: '', 
+          type: lang === 'sl' ? 'Urbana Fotografija' : 'Urban Photography', 
+          message: '' 
+        });
         setConsent(false);
         setTimeout(() => setStatus('idle'), 5000);
       } else {
@@ -61,9 +69,9 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div>
-            <span className="text-zinc-400 uppercase tracking-[0.5em] text-xs mb-4 block">Kontakt</span>
+            <span className="text-zinc-400 uppercase tracking-[0.5em] text-xs mb-4 block">{t.nav.contact}</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
-              ZAČNIMO <span className="font-serif italic font-normal text-zinc-400">PROJEKT.</span>
+              {t.contact.titleMain} <span className="font-serif italic font-normal text-zinc-400">{t.contact.titleItalic}</span>
             </h2>
             
             <div className="space-y-12 mt-16">
@@ -72,7 +80,7 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   <Mail size={18} className="text-zinc-400" />
                 </div>
                 <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">E-pošta</h4>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">{t.contact.emailLabel}</h4>
                   <p className="text-zinc-200">info@zkphotolab.si</p>
                 </div>
               </div>
@@ -82,7 +90,7 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   <Instagram size={18} className="text-zinc-400" />
                 </div>
                 <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Social</h4>
+                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-1">{t.contact.socialLabel}</h4>
                   <a href="https://www.instagram.com/zkphotolab" target="_blank" className="text-zinc-200 hover:text-white transition-colors underline decoration-white/20 underline-offset-4">@zkphotolab</a>
                 </div>
               </div>
@@ -90,23 +98,23 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
           </div>
 
           <div className="bg-[#0f0f0f] p-8 md:p-12 border border-white/5">
-            <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-sm">Pošlji povpraševanje</h3>
+            <h3 className="text-xl font-bold mb-8 uppercase tracking-widest text-sm">{t.contact.formTitle}</h3>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-400">Ime in Priimek</label>
+                <label className="text-[10px] uppercase tracking-widest text-zinc-400">{t.contact.nameLabel}</label>
                 <input 
                   required
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   type="text" 
-                  placeholder="Janez Novak"
+                  placeholder={t.contact.namePlaceholder}
                   className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">E-naslov</label>
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">{t.contact.emailInputLabel}</label>
                   <input 
                     required
                     name="email"
@@ -118,34 +126,31 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">Tip Projekta</label>
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400">{t.contact.typeLabel}</label>
                   <select 
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
                     className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100 appearance-none"
                   >
-                    <option>Urbana Fotografija</option>
-                    <option>Lifestyle Portret</option>
-                    <option>Editorial</option>
-                    <option>Drugo</option>
+                    {t.services.items.map(s => <option key={s.id}>{s.title}</option>)}
+                    <option>{lang === 'sl' ? 'Drugo' : 'Other'}</option>
                   </select>
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-400">Sporočilo</label>
+                <label className="text-[10px] uppercase tracking-widest text-zinc-400">{t.contact.messageLabel}</label>
                 <textarea 
                   required
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  placeholder="Opišite vašo vizijo..."
+                  placeholder={t.contact.messagePlaceholder}
                   className="w-full bg-black border border-white/10 p-4 focus:border-white/40 focus:outline-none transition-colors text-zinc-100"
                 ></textarea>
               </div>
 
-              {/* GDPR Consent Checkbox */}
               <div className="flex items-start gap-3 py-2">
                 <input 
                   type="checkbox" 
@@ -155,13 +160,13 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                   className="mt-1 w-4 h-4 bg-black border-white/20 rounded accent-white cursor-pointer"
                 />
                 <label htmlFor="gdpr-consent" className="text-[10px] leading-relaxed text-zinc-400 tracking-wide cursor-pointer">
-                  Strinjam se z obdelavo mojih osebnih podatkov za namen odgovora na moje povpraševanje v skladu s{' '}
+                  {t.contact.consentText}
                   <button 
                     type="button"
                     onClick={() => onNavigate && onNavigate('privacy')}
                     className="underline decoration-white/20 underline-offset-2 hover:text-white transition-colors"
                   >
-                    Politiko zasebnosti
+                    {t.contact.privacyLink}
                   </button>.
                 </label>
               </div>
@@ -177,15 +182,14 @@ const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
                     : 'bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-400'
                 }`}
               >
-                {status === 'idle' && <>Pošlji sporočilo <Send size={14} /></>}
-                {status === 'sending' && "Pošiljam..."}
-                {status === 'success' && <>Sporočilo poslano! <Check size={14} /></>}
-                {status === 'error' && <>Napaka pri pošiljanju <AlertCircle size={14} /></>}
+                {status === 'idle' && <>{t.contact.btnSend} <Send size={14} /></>}
+                {status === 'sending' && t.contact.btnSending}
+                {status === 'success' && <>{t.contact.btnSuccess} <Check size={14} /></>}
+                {status === 'error' && <>{t.contact.btnError} <AlertCircle size={14} /></>}
               </button>
 
-              {/* Informational Text */}
               <p className="text-[9px] leading-relaxed text-zinc-500 tracking-wider text-justify mt-6">
-                Vaše podatke (ime in e-naslov) bomo uporabili izključno za komunikacijo z vami glede vašega povpraševanja. Podatkov ne bomo delili s tretjimi osebami ali jih uporabljali za namene oglaševanja brez vaše dodatne privolitve. Svojo privolitev lahko kadarkoli prekličete s sporočilom na <span className="text-zinc-400">info@zkphotolab.si</span>.
+                {t.contact.infoNote}
               </p>
             </form>
           </div>
