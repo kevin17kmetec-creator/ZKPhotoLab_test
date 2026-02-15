@@ -47,6 +47,8 @@ export const translations = {
       },
       page: 'Stran',
       of: 'od',
+      loading: 'Nalaganje galerije...',
+      error: 'Napaka pri nalaganju slik. Prosimo, poskusite kasneje.',
     },
     services: {
       badge: 'Ponudba',
@@ -62,7 +64,7 @@ export const translations = {
         {
           id: '02',
           title: 'Lifestyle Portreti',
-          desc: 'Fotografiranje posameznikov v naravni svetlobi z avtentičnim pridihom. Iskanje spontanih trenutkov in naravnih interakcij.',
+          desc: 'Fotografiranje posamevnikov v naravni svetlobi z avtentičnim pridihom. Iskanje spontanih trenutkov in naravnih interakcij.',
         },
         {
           id: '03',
@@ -179,6 +181,8 @@ export const translations = {
       },
       page: 'Page',
       of: 'of',
+      loading: 'Loading gallery...',
+      error: 'Error loading images. Please try again later.',
     },
     services: {
       badge: 'Services',
