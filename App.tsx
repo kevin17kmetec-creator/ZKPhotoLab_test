@@ -58,7 +58,7 @@ const App: React.FC = () => {
           <div className="animate-in fade-in duration-700">
             <Hero onNavigate={setCurrentView} lang={lang} />
             <About isCompact onNavigate={setCurrentView} lang={lang} />
-            <Gallery lang={lang} />
+            <Gallery lang={lang} isSubpage={false} />
             <Services onNavigate={setCurrentView} lang={lang} />
             <Contact onNavigate={setCurrentView} lang={lang} />
           </div>
@@ -66,7 +66,7 @@ const App: React.FC = () => {
       case 'about':
         return <div className="pt-20 animate-in fade-in duration-500"><About onNavigate={setCurrentView} lang={lang} /></div>;
       case 'gallery':
-        return <div className="pt-20 animate-in fade-in duration-500"><Gallery lang={lang} /></div>;
+        return <div className="pt-20 animate-in fade-in duration-500"><Gallery lang={lang} isSubpage={true} /></div>;
       case 'services':
         return <div className="pt-20 animate-in fade-in duration-500"><Services onNavigate={setCurrentView} lang={lang} /></div>;
       case 'contact':
