@@ -223,28 +223,34 @@ const Gallery: React.FC<GalleryProps> = ({ lang, isSubpage = false }) => {
         >
           <button 
             className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110] cursor-pointer"
-            onClick={closeLightbox}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeLightbox();
+            }}
             aria-label="Zapri"
           >
             <X size={32} />
           </button>
           
           <div 
-            className="relative max-w-7xl w-full h-full flex flex-col items-center justify-center gap-6 cursor-default" 
-            onClick={(e) => e.stopPropagation()} // Prepreči zapiranje, če kliknemo neposredno na sliko ali njeno vsebino
+            className="relative max-w-7xl w-full h-full flex flex-col items-center justify-center gap-6 cursor-default"
           >
             <div className="w-full h-full flex items-center justify-center overflow-hidden">
               <img 
                 src={selectedPhoto.url} 
                 alt={selectedPhoto.title}
                 className="max-w-full max-h-full object-contain shadow-2xl animate-in zoom-in-95 duration-500"
+                onClick={(e) => e.stopPropagation()}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = `https://drive.google.com/thumbnail?id=${selectedPhoto.id}&sz=w2000`;
                 }}
               />
             </div>
-            <div className="text-center absolute bottom-4 md:bottom-10 bg-black/50 backdrop-blur-md px-6 py-3 border border-white/5">
+            <div 
+              className="text-center absolute bottom-4 md:bottom-10 bg-black/50 backdrop-blur-md px-6 py-3 border border-white/5"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h3 className="text-sm font-bold tracking-widest uppercase mb-1">{selectedPhoto.title}</h3>
               {selectedPhoto.year && <p className="text-zinc-500 text-[9px] uppercase tracking-[0.3em]">{selectedPhoto.year}</p>}
             </div>
